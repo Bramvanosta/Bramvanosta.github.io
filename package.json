@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "build:prod": "NODE_ENV=production parcel build index.html"
+    "build:prod": "NODE_ENV=production parcel build index.html --public-url ./"
   },
   "dependencies": {
     "animejs": "^2.2.0",

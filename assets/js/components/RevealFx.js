@@ -9,10 +9,12 @@ const defaultOptions = {
   revealSettings: {
     // Animation direction: left right (lr) || right left (rl) || top bottom (tb) || bottom top (bt).
     direction: 'lr',
-    // Revealer´s background color.
-    bgcolor: '#f0f0f0',
+    // Revealer´s background.
+    background: '#f0f0f0',
     // Animation speed. This is the speed to "cover" and also "uncover" the element (seperately, not the total time).
     duration: 500,
+    // Animation delay. This is the delay between the "cover" and "uncover" animations.
+    delay: 0,
     // Animation easing. This is the easing to "cover" and also "uncover" the element.
     easing: 'easeInOutQuint',
     // percentage-based value representing how much of the area should be left covered.
@@ -29,7 +31,14 @@ const defaultOptions = {
 class RevealFx {
   constructor(el, options) {
     this.el = el;
-    this.options = { ...defaultOptions, ...options };
+    this.options = {
+      ...defaultOptions,
+      ...options,
+      revealSettings: {
+        ...defaultOptions.revealSettings,
+        ...options.revealSettings,
+      }
+    };
 
     this.init();
   }
@@ -95,30 +104,21 @@ class RevealFx {
 		};
   }
   
-  reveal(revealSettingsParam) {
+  reveal() {
 		if (this.isAnimating) {
 			return false;
     }
     
-		this.isAnimating = true;
-		
-		const defaults = {
-      duration: 500,
-      easing: 'easeInOutQuint',
-      delay: 0,
-      bgcolor: '#f0f0f0',
-      direction: 'lr',
-      coverArea: 0
-    };
+    this.isAnimating = true;
 
-    const revealSettings = revealSettingsParam || this.options.revealSettings;
-    const direction = revealSettings.direction || defaults.direction;
+    const revealSettings = this.options.revealSettings;
+    const direction = revealSettings.direction;
     const transformSettings = this.getTransformSettings(direction);
 
-		this.revealer.style.WebkitTransform = this.revealer.style.transform =  transformSettings.val;
+		this.revealer.style.WebkitTransform = this.revealer.style.transform = transformSettings.val;
 		this.revealer.style.WebkitTransformOrigin = this.revealer.style.transformOrigin =  transformSettings.origin.initial;
-		
-		this.revealer.style.backgroundColor = revealSettings.bgcolor || defaults.bgcolor;
+    
+		this.revealer.style.background = revealSettings.background;
 		
 		this.revealer.style.opacity = 1;
 
@@ -132,7 +132,7 @@ class RevealFx {
     };
 
     let animationSettings = {
-      delay: revealSettings.delay || defaults.delay,
+      delay: revealSettings.delay,
       complete: () => {
         this.revealer.style.WebkitTransformOrigin = this.revealer.style.transformOrigin = transformSettings.origin.halfway;		
         if (typeof revealSettings.onCover === 'function') {
@@ -143,11 +143,11 @@ class RevealFx {
       }
     };
 
-		animationSettings.targets = animationSettings_2.targets = this.revealer;
-		animationSettings.duration = animationSettings_2.duration = revealSettings.duration || defaults.duration;
-		animationSettings.easing = animationSettings_2.easing = revealSettings.easing || defaults.easing;
+    animationSettings.targets = animationSettings_2.targets = this.revealer;
+		animationSettings.duration = animationSettings_2.duration = revealSettings.duration;
+		animationSettings.easing = animationSettings_2.easing = revealSettings.easing;
 
-    const coverArea = revealSettings.coverArea || defaults.coverArea;
+    const coverArea = revealSettings.coverArea;
     
 		if (direction === 'lr' || direction === 'rl') {
 			animationSettings.scaleX = [0, 1];

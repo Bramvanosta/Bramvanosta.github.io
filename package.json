@@ -1,9 +1,12 @@
 {
   "dependencies": {
-    "animejs": "^2.2.0"
+    "animejs": "^2.2.0",
+    "charming": "^2.2.2",
+    "normalize.css": "^8.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0"
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0"
   }
 }

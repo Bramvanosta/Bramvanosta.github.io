@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "animejs": "^2.2.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0"
+  }
+}
